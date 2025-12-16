@@ -56,7 +56,18 @@ class GameServiceTest {
     @Test
     void testStartGame_Success() {
         // TODO: Implementar el test para testStartGame_Success
-        
+        when(playerRepository.findById(1L)).thenReturn(Optional.of(player));
+        when(wordRepository.findRandomWord()).thenReturn(Optional.of(word));
+        when(gameInProgressRepository.findByJugadorAndPalabra(1L,1L)).thenReturn(Optional.empty());
+        when(gameInProgressRepository.save(any(GameInProgress.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        GameResponseDTO result = gameService.startGame(1L);
+
+        assertNotNull(result);
+        assertEquals(7, result.getIntentosRestantes());
+        assertNotNull(result.getPalabraOculta());
+        assertTrue(result.getPalabraOculta().contains("_"));
+
     }
 
     @Test

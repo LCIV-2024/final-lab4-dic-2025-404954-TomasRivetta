@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,13 +40,31 @@ class WordServiceTest {
     @Test
     void testGetAllWords() {
         // TODO: Implementar el test para getAllWords
-        
+
+        List<Word> words = Arrays.asList(word1, word2, word3);
+        when(wordRepository.findAllOrdered()).thenReturn(words);
+
+        List<WordDTO> resultWords = wordService.getAllWords();
+
+        assertNotNull(resultWords);
+        assertEquals(3, resultWords.size());
+        assertEquals("PROGRAMADOR", resultWords.get(0).getPalabra());
+        assertEquals("COMPUTADORA", resultWords.get(1).getPalabra());
+        assertEquals("TECNOLOGIA", resultWords.get(2).getPalabra());
     }
 
     @Test
     void testGetAllWords_EmptyList() {
         // TODO: Implementar el test para getAllWords_EmptyList
-        
+
+        when(wordRepository.findAllOrdered()).thenReturn(Collections.emptyList());
+
+        List<WordDTO> resultWords = wordService.getAllWords();
+
+        assertNotNull(resultWords);
+        assertTrue(resultWords.isEmpty());
+        assertEquals(0, resultWords.size());
+
     }
 }
 
